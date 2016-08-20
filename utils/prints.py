@@ -1,5 +1,5 @@
 import sys,struct,fcntl,termios,readline
-from colors import colors
+from .colors import colors
 
 CLEAR_LINE = '\x1b[2K'
 MOVE_UP = '\x1b[1A'

@@ -1,7 +1,7 @@
 import socket,threading, pickle
 import sys,struct,fcntl,termios,readline
-from utils import *
-from colors import colors
+from utils.prints import *
+from utils.colors import colors
 from secret import HOST
 
 class Client(object):
@@ -76,6 +76,7 @@ class Client(object):
         self.sock.sendall(msg)
 
 if __name__ == '__main__':
-  client = Client(host=HOST)
+  # client = Client(host=HOST)
+  client = Client()
   print('Connected')
   client.send_message()
