@@ -4,7 +4,7 @@ import pickle
 from queue import Queue
 
 class Server(object):
-  def __init__(self, host='LOCALHOST', port=9999):
+  def __init__(self, host='LOCALHOST', port=6000):
     self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.s.bind((host,port))
     self.s.listen(10)
