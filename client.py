@@ -76,7 +76,6 @@ class Client(object):
         self.sock.sendall(msg)
 
 if __name__ == '__main__':
-  # client = Client(host=HOST)
-  client = Client()
-  print('Connected')
+  client = Client(host=HOST)
+  client.print_help()
   client.send_message()
