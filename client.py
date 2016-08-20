@@ -5,7 +5,7 @@ from colors import colors
 import readline
 
 class Client(object):
-  def __init__(self, host='LOCALHOST', port=6000):
+  def __init__(self, host=socket.gethostname(), port=6000):
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.sock.connect((host,port))
     self.username = input('Username: ').strip()
