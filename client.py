@@ -2,7 +2,7 @@ import socket,threading, pickle
 import sys,struct,fcntl,termios,readline
 from utils import *
 from colors import colors
-import readline
+from secret import HOST
 
 class Client(object):
   def __init__(self, host=socket.gethostname(), port=6000):
@@ -76,6 +76,6 @@ class Client(object):
         self.sock.sendall(msg)
 
 if __name__ == '__main__':
-  client = Client()
+  client = Client(host=HOST)
   print('Connected')
   client.send_message()
