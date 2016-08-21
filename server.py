@@ -63,6 +63,7 @@ class Server(object):
         msg = pickle.dumps(m)
         for username, client in self.connections.items():
           client.sendall(msg)
+        self.logger.INFO('Message from %s was broadcast',m[0])
 
   def start(self):
     accept = threading.Thread(target=self.accept_connections)
