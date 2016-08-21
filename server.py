@@ -1,6 +1,7 @@
 import socket
 import threading
 import pickle
+import logging
 from queue import Queue
 
 class Server(object):
@@ -10,6 +11,8 @@ class Server(object):
     self.s.listen(10)
     self.connections = {}
     self.queue = Queue(maxsize=100)
+    self.logger = logging.getLogger(__name__)
+    logging.basicConfig(filename='bear_server.log',format='%(asctime)s:%(levelname)s:%(message)s',level=logging.INFO,datefmt='%m/%d/%Y %I:%M:%S%p')
 
   def accept_connections(self):
     while True:
@@ -17,6 +20,7 @@ class Server(object):
       username = client.recv(1024).decode()
       self.connections[username] = client
       print('Client connection accepted from {0}, {1} on port {2}'.format(username,client_addr[0],client_addr[1]))
+      self.logger.info('Connection accepted from user %s, IP %s on port %s',username,client_addr[0],client_addr[1])
       print(self.connections)
 
       # start thread for client
@@ -37,17 +41,20 @@ class Server(object):
 
       elif message == '!here':
         # user requetest list of current users
+        self.logger.info('%s requested list of usernames',username)
         usernames = [k for k,v in self.connections.items()]
         usernames.insert(0,'USERNAMES')
         client.sendall(pickle.dumps(usernames))
 
       else:
         # user sent a normal message to be broadcast
+        self.logger.info('%s sent a message',username)
         self.queue.put((username, message))
 
     client.close()
     del self.connections[username]
     print('Connection closed')
+    self.logger.info('%s closed connection',username)
 
   def send_messages(self):
     while True:
@@ -69,5 +76,8 @@ class Server(object):
     # join rooms
 
 if __name__ == '__main__':
-  server = Server()
-  server.start()
+  try:
+    server = Server()
+    server.start()
+  except Exception as e:
+    server.logger.exception(e)

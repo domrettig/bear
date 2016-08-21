@@ -1,5 +1,6 @@
-import socket,threading, pickle
-import sys,struct,fcntl,termios,readline
+import socket
+import threading
+import pickle
 from utils.prints import *
 from utils.colors import colors
 from secret import HOST
