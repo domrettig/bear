@@ -3,7 +3,6 @@ import threading
 import pickle
 from utils.prints import *
 from utils.colors import colors
-from secret import HOST
 
 class Client(object):
   def __init__(self, host=socket.gethostname(), port=6000):
@@ -76,14 +75,3 @@ class Client(object):
       else:
         msg = pickle.dumps((self.username,message.strip()))
         self.sock.sendall(msg)
-
-def main():
-  try:
-    client = Client(host=HOST)
-    client.print_help()
-    client.send_message()
-  except KeyboardInterrupt:
-    pass
-
-if __name__ == '__main__':
-  main()
