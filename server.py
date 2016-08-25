@@ -2,7 +2,11 @@ import socket
 import threading
 import pickle
 import logging
+from Crypto.Cipher import AES
 from queue import Queue
+import psycopg2 as pg
+from secret import DB_HOST, DB_PASSWORD, IV, KEY
+from utils.verify import verify_pw
 
 class Server(object):
   def __init__(self, host=socket.gethostname(), port=6000):
@@ -10,14 +14,32 @@ class Server(object):
     self.s.bind((host,port))
     self.s.listen(10)
     self.connections = {}
+
+    # 100 message backlog
     self.queue = Queue(maxsize=100)
+
+    # logging
     self.logger = logging.getLogger(__name__)
     logging.basicConfig(filename='bear_server.log',format='%(asctime)s:%(levelname)s:%(message)s',level=logging.INFO,datefmt='%m/%d/%Y %I:%M:%S%p')
+
+    # postgres connection
+    self.conn = pg.connect(host=DB_HOST,database='bear',user='bear',password=DB_PASSWORD)
+    self.cur = self.conn.cursor()
 
   def accept_connections(self):
     while True:
       client, client_addr = self.s.accept()
       username = client.recv(1024).decode()
+      # verified = False
+      # while not verified:
+      #   client.sendall('no'.encode())
+      #   credentials = client.recv(1024)
+      #   username, pw = pickle.loads(credentials)
+      #   obj = AES.new(KEY, AES.MODE_CBC, IV)
+      #   pw = obj.decrypt(pw)
+      #   verified = verify_pw(username, pw, self.cur, self.conn)
+      # client.sendall('ok'.encode())
+
       self.connections[username] = client
       print('Client connection accepted from {0}, {1} on port {2}'.format(username,client_addr[0],client_addr[1]))
       self.logger.info('Connection accepted from user %s, IP %s on port %s',username,client_addr[0],client_addr[1])
@@ -63,7 +85,7 @@ class Server(object):
         msg = pickle.dumps(m)
         for username, client in self.connections.items():
           client.sendall(msg)
-        self.logger.INFO('Message from %s was broadcast',m[0])
+        self.logger.info('Message from %s was broadcast',m[0])
 
   def start(self):
     accept = threading.Thread(target=self.accept_connections)
