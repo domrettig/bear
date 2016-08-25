@@ -24,9 +24,7 @@ class Server(object):
       username = client.recv(1024).decode()
 
       self.connections[username] = client
-      print('Client connection accepted from {0}, {1} on port {2}'.format(username,client_addr[0],client_addr[1]))
       self.logger.info('Connection accepted from user %s, IP %s on port %s',username,client_addr[0],client_addr[1])
-      print(self.connections)
 
       # start thread for client
       thread = threading.Thread(target=self.client_handler,args=(client,username))
@@ -58,7 +56,6 @@ class Server(object):
 
     client.close()
     del self.connections[username]
-    print('Connection closed')
     self.logger.info('%s closed connection',username)
 
   def send_messages(self):
