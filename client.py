@@ -1,11 +1,9 @@
 import socket
 import threading
 import pickle
-from Crypto.Cipher import AES
-import getpass
 from utils.prints import *
 from utils.colors import colors
-from secret import HOST, IV, KEY
+from secret import HOST
 
 class Client(object):
   def __init__(self, host=socket.gethostname(), port=6000):
@@ -13,16 +11,6 @@ class Client(object):
     self.sock.connect((host,port))
     self.username = input('Username: ').strip()
     self.sock.sendall(self.username.encode())
-    
-    # response = self.sock.recv(1024).decode()
-    # while response == 'no':
-    #   self.username = input('Username: ').strip()
-    #   pw = getpass.getpass('Password: ')
-    #   obj = AES.new(KEY, AES.MODE_CBC, IV)
-    #   pw = obj.encrypt(pw.rjust(32,'#'))
-    #   credentials = pickle.dumps((self.username,pw))
-    #   self.sock.sendall(credentials)
-    #   response = self.sock.recv(1024).decode()
 
     self.listener = threading.Thread(target=self.listener,name='listener')
     # make listener thread a daemon so client can be gracefully exited
@@ -91,8 +79,7 @@ class Client(object):
 
 def main():
   try:
-    # client = Client(host=HOST)
-    client = Client()
+    client = Client(host=HOST)
     client.print_help()
     client.send_message()
   except KeyboardInterrupt:
