@@ -1,5 +1,5 @@
 from client import Client
-from secret imoprt HOST
+from secret import HOST
 
 def main():
   try:
