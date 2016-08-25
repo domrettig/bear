@@ -3,8 +3,7 @@ from secret import HOST
 
 def main():
   try:
-    # client = Client(host=HOST)
-    client = Client()
+    client = Client(host=HOST)
     client.print_help()
     client.send_message()
   except KeyboardInterrupt:
