@@ -1,9 +1,12 @@
 from client import Client
 from secret import HOST
 
-def main():
+def main(local=False):
   try:
-    client = Client(host=HOST)
+    if local:
+      client = Client()
+    else:
+      client = Client(host=HOST)
     client.print_help()
     client.send_message()
   except KeyboardInterrupt:

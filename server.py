@@ -22,6 +22,7 @@ class Server(object):
     while True:
       client, client_addr = self.s.accept()
       username = client.recv(1024).decode()
+      self.queue.put(('SERVER',username+' joined'))
 
       self.connections[username] = client
       self.logger.info('Connection accepted from user %s, IP %s on port %s',username,client_addr[0],client_addr[1])
@@ -57,6 +58,7 @@ class Server(object):
     client.close()
     del self.connections[username]
     self.logger.info('%s closed connection',username)
+    self.queue.put(('SERVER',username+' left'))
 
   def send_messages(self):
     while True:
@@ -72,11 +74,6 @@ class Server(object):
     send = threading.Thread(target=self.send_messages)
     accept.start()
     send.start()
-    ################## TODO
-    # need to do a join or something here so server can be gracefully exited
-    # logging
-    # username login (probably need to be up on ec2/rds for that)
-    # join rooms
 
 if __name__ == '__main__':
   try:
