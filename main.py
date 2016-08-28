@@ -8,3 +8,6 @@ def main():
     client.send_message()
   except KeyboardInterrupt:
     pass
+
+if __name__ == '__main__':
+  main()
