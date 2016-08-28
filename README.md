@@ -4,11 +4,11 @@ Simple command line chat client
 ## setup
 1. Clone this repo
 
-2. Create a file called `secret.py` in the `bear` dir containing `HOST = SERVERIPHERE`
+2. On the server, run `python3 server.py` in background
 
-3. Run `sudo python3 setup.py install`
+2. On client, create a file called `secret.py` in the `bear` dir containing `HOST = "SERVERIPHERE"`
 
-4. Use `bear` to connect to the server
+3. Run `python3 main.py` to start a client connection
 
 ## commands
 `!exit` in the client to quit program
