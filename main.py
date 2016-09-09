@@ -2,6 +2,7 @@ from client import Client
 from secret import HOST
 
 def main(local=False):
+  # if local is True, connect to a server on the local machine
   try:
     if local:
       client = Client()

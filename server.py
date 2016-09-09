@@ -48,7 +48,6 @@ class Server(object):
         # user requested list of current users, dont put in queue because this only gets sent to particular user
         self.logger.info('%s requested list of usernames',username)
         usernames = [k for k,v in self.connections.items()]
-        # usernames.insert(0,'USERNAMES')
         msg = ('USERNAMES',usernames)
         client.sendall(pickle.dumps(msg))
 
@@ -70,7 +69,6 @@ class Server(object):
         msg = pickle.dumps(m)
         for client in self.connections.values():
           client.sendall(msg)
-        # self.logger.info('Message from %s was broadcast',m[0])
         self.logger.info('%s said %s',m[0],m[1])
 
   def start(self):
