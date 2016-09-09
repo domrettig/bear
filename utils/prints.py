@@ -1,6 +1,7 @@
 import sys,struct,fcntl,termios,readline
 from .colors import colors
 
+# VT100 escape codes to control the command line prompt
 CLEAR_LINE = '\x1b[2K'
 MOVE_UP = '\x1b[1A'
 MOVE_TO_START = '\x1b[0G'

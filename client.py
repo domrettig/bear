@@ -21,13 +21,13 @@ class Client(object):
       m = self.sock.recv(1024)
 
       if not m:
-        continue
+        break # connection has been closed on server side
 
       m = pickle.loads(m)
       if m[0] == 'USERNAMES':
         # user requested a list of usernames
-        # sent from server in form ('USER1','USER2',....,'USERX')
-        usernames = ', '.join(m[1:])
+        # sent from server in form (USERNAMES,['USER1','USER2',....,'USERX'])
+        usernames = ', '.join(m[1])
         msg_print('USERS HERE', usernames)
       else:
         # user sent a regular message
@@ -70,8 +70,10 @@ class Client(object):
       if message == '!exit':
         self.sock.close()
         return
+      # commands start with !
       elif message[0] == '!':
         self.parse_command(message[1:].split(' '))
       else:
+        # use pickle to preserve tuple structure
         msg = pickle.dumps((self.username,message.strip()))
         self.sock.sendall(msg)
