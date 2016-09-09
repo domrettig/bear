@@ -13,4 +13,4 @@ def main(local=False):
     pass
 
 if __name__ == '__main__':
-  main(local=True)
+  main()
