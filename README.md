@@ -14,3 +14,10 @@ Simple command line chat client
 `!exit` in the client to quit program
 
 `!here` to list current users logged into server
+
+## setting up encryption
+1. Install pycrypto, `pip3 install pycrypto`
+
+2. In `main.py`, set `encryption=True` in `Client` constructor
+
+3. In `secret.py`, set `KEY="SOME16BYTEKEY"` and `IV="SOME16BYTEIV"`, these need to be the same on all clients connected to one server
